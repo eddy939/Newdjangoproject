@@ -13,7 +13,11 @@ from django.http import HttpResponse
 
 @login_required
 def restricted(request):
-    return HttpResponse("Since you're logged in , you can see this text!")
+
+    context_dict = {'boldmessage': "Since you're logged in , you can see this text!"}
+
+    return render(request, 'rango/restricted.html', context_dict)
+
 
 @login_required
 def user_logout(request):
@@ -252,3 +256,4 @@ def about(request):
     #Note that the first parameter is the template we wish to use
 
     return render(request, 'rango/about.html', context_dict)
+
