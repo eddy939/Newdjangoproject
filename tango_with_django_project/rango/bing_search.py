@@ -8,7 +8,6 @@ from keys import BING_API_KEY
 
 
 
-
 def run_query(search_terms):
     # Specify the base
     root_url = 'https://api.datamarket.azure.com/Bing/Search/'
@@ -27,7 +26,7 @@ def run_query(search_terms):
 
     # Construct the latter part of our request's URL
     #Sets the format of the response to JSON and sets other properties.
-    search_url = "{0}{1}?$format=json&top={2}&$skip={3}&Query={4}".format(
+    search_url = "{0}{1}?$format=json&$top={2}&$skip={3}&Query={4}".format(
         root_url,
         source,
         results_per_page,
@@ -44,10 +43,10 @@ def run_query(search_terms):
 
     # Create a 'password manager' which handles authentication for us.
     password_mgr = urllib2.HTTPPasswordMgrWithDefaultRealm()
-    password_mgr.add_password(None, search_url, username, BING_API_KEY)
+    password_mgr.add_password(None, search_url, username, bing_api_key)
 
     #Create our results list which we'll populate.
-    results=[]
+    results = []
 
     try:
         # Prepare for connecting to Bing's servers.
