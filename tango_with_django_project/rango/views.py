@@ -7,10 +7,30 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from datetime import datetime
 from rango.bing_search import run_query
+from django.shortcuts import redirect
+
 
 
 # Create your views here.
 from django.http import HttpResponse
+
+
+
+def track_url():
+    page_id = None
+    url = '/rango/'
+    if request.method == 'GET':
+        if 'page_id' in request.GET:
+            page_id = request.GET['page_id']
+            try:
+                page = Page.objects.get(id=page_id)
+                page.views = page.views + 1
+                page.save()
+                url = page.url
+            except:
+                pass
+
+    return redirect(url)
 
 
 
@@ -194,6 +214,17 @@ def category(request, category_name_slug):
 
     #create a context dictionary which we can pass to the template rendering engine.
     context_dict = {}
+    context_dict['result_list'] = None
+    context_dict['query'] = None
+    if request.method == 'POST':
+        query = request.POST['query'].strip()
+
+        if query:
+            # Run our Bing function to get the result list!
+            result_list = run_query(query)
+
+            context_dict['result_list'] = result_list
+            context_dict['query'] = query
 
     try:
         # Can we find a category name slug with the given name?
@@ -201,11 +232,11 @@ def category(request, category_name_slug):
         # So the .get() method returns one model instance or raises an exception
         category = Category.objects.get(slug=category_name_slug)
         context_dict['category_name'] = category.name
-        context_dict['category_name_slug'] = category_name_slug
+
 
         #Retrieve all of the associated pages.
         #Note that filter returns >= 1 model instance.
-        pages = Page.objects.filter(category=category)
+        pages = Page.objects.filter(category=category).order_by('-views')
 
         #Adds our results list to the template context under name pages
         context_dict['pages'] = pages
@@ -217,8 +248,11 @@ def category(request, category_name_slug):
         #Don't do anything - the template displays the "no category" message for us.
         pass
 
+    if not context_dict['query']:
+        context_dict['query'] = category.name
+
     # Go render the response and return it to the client.
-    print context_dict
+
     return render(request, 'rango/category.html', context_dict)
 
 def clean(self):
