@@ -54,8 +54,11 @@
                     {% endif %}
 
             {% if user.is_authenticated %}
-                    <li><a href="/rango/category/{{ category_name_slug }}/add_page/">Add a New Page</a></li>
-                    {% endif %}
+                   <p> <a href="/rango/category/{{ category_name_slug }}/add_page/">
+                        <button id="category-btn"> Add a New Page </button> </a></p>
+
+
+                {% endif %}
             {% else %}
                     The specified category {{ category_name }} does not exist!
         {% endif %}
