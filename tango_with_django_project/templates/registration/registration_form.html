@@ -5,6 +5,7 @@
 <form role="form"  method="post" action=".">
                 {% csrf_token %}
 
+
 <h2 class="form-signin-heading">Sign Up Here</h2>
 
 <div class="form-group" >
@@ -24,13 +25,26 @@
  <input class="form-control" id="id_password2" name="password2" type="password" placeholder="Enter password again" /></p>
 </div>
 
-<label>Please select a photo to upload</label>
-<form method="post" enctype="multipart/form-data" >
-    <input type="file" name="myfile"/>
-</form>
 
 
-<button type="submit" class="btn btn-primary">Register</button>
+<div class="form-group">
+    <p><label for="website">Website:</label>
+ <input class="form-control" id="website" name="website" type="website" placeholder="Enter website" /></p>
+</div>
+
+
+
+<div class="form-group">
+<p>
+<label>Please select a profile image to upload</label>
+<input type="file" name="myfile" size="50" >
+</p>
+</div>
+
+
+
+<button type="submit" class="btn btn-primary">Submit</button>
 
         </form>
 {% endblock %}
+
