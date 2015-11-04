@@ -38,9 +38,10 @@
                         <li><a href="{% url 'index' %}">Home</a></li>
                             {% if user.is_authenticated %}
                                 <li class="navbar-text">Welcome, {{ user.username }} </li>
+                                <li><a href="/rango/profile/">Profile</a></li>
                                 <li><a href="{% url 'restricted' %}">Restricted Page</a></li>
                                 <li><a href="{% url 'auth_logout' %}?next=/rango/">Logout</a></li>
-                                <li><a href="{% url 'add_category' %}">Add a New Category</a>/li>
+                                <li><a href="{% url 'add_category' %}">Add a New Category</a></li>
                                 <li><a href="{% url 'auth_password_change' %}">Change Password</a></li>
                                 <li><a href="{% url 'auth_password_reset' %}">Reset Password</a></li>
                             {% else %}

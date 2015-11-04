@@ -10,7 +10,8 @@ from rango.bing_search import run_query
 from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.template import RequestContext
-
+from django.contrib.auth.models import User
+from rango.models import UserProfile
 
 
 
@@ -433,3 +434,23 @@ def search(request):
             result_list = run_query(query)
 
     return render(request, 'rango/search.html', {'result_list': result_list})
+
+
+
+
+
+@login_required
+def profile(request):
+    context = RequestContext(request)
+    cat_list = get_category_list()
+    context_dict = {'cat_list': cat_list}
+    u = User.objects.get(username=request.user)
+
+    try:
+        up = UserProfile.objects.get(user=u)
+    except:
+        up = None
+
+    context_dict['user'] = u
+    context_dict['userprofile'] = up
+    return render_to_response('rango/profile.html', context_dict, context)
